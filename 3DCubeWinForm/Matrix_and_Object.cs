@@ -280,6 +280,14 @@ namespace _3DCubeWinForm
 
             return cube;
         }
+        /// <summary>
+        /// Проволочная модель тетрайдера
+        /// </summary>
+        /// <param name="a">первая из нижних</param>
+        /// <param name="b">вторая</param>
+        /// <param name="c">третья</param>
+        /// <param name="d">верхняя точка</param>
+        /// <returns></returns>
         public static WireModel NewTetrahedron(Vector a, Vector b,Vector c, Vector d)
         {
             WireModel tetrahedron = new WireModel();
