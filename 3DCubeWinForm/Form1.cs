@@ -13,9 +13,10 @@ namespace _3DCubeWinForm
     public partial class Form1 : Form
     {
         private const double ze = 50;
-        private readonly WireModel tetrahedron = FigureFactory.NewTetrahedron(new Vector(-500, -(1000 * Math.Sqrt(6) / 3),1000 -(1000*Math.Sqrt(6)/12)), new Vector(0, 1000 * Math.Sqrt(6) / 6, 1000-(1000 * Math.Sqrt(6) / 12)), new Vector(500, -(1000 * Math.Sqrt(6) / 12),1000 -(1000 * Math.Sqrt(6) / 12)+1000), new Vector(0, 0,1000 -(1000 * Math.Sqrt(6) / 3)));
+        private const double dalinost = 800;
+        private readonly WireModel tetrahedron = FigureFactory.NewTetrahedron(new Vector(-500, -(1000 * Math.Sqrt(3) / 6),dalinost -1000*Math.Sqrt(6)/12), new Vector(0, 1000 * Math.Sqrt(6) / 6, dalinost - 1000 * Math.Sqrt(6) / 12), new Vector(500, -1000 * Math.Sqrt(3) / 6,dalinost -1000 * Math.Sqrt(6) / 12), new Vector(0, 0,dalinost -1000 * Math.Sqrt(6) / 4));
         private Matrix current = Matrix.I;
-        private Matrix increment = Matrix.Move(new Vector(0, 0, 1000)) * Matrix.RotateX(0.05) * Matrix.Move(new Vector(0, 0, -1000));
+        private Matrix increment = Matrix.Move(new Vector(0, 0, dalinost))  * Matrix.RotateY(0.05) * Matrix.Move(new Vector(0, 0, -dalinost));
 
         public Form1()
         {
