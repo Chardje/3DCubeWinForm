@@ -280,13 +280,33 @@ namespace _3DCubeWinForm
 
             return cube;
         }
-        /*public static WireModel NewCilindr(Vector centr,double r,double h)
+        public static WireModel NewTetrahedron(Vector a, Vector b,Vector c, Vector d)
         {
+            WireModel tetrahedron = new WireModel();
+            Vector a0 = a;
+            Vector b0 = b;
+            Vector c0 = c;
+            Vector d1 = d;
 
+            tetrahedron.AddEdge(new Edge(a0, b0));
+            tetrahedron.AddEdge(new Edge(a0, c0));
+            tetrahedron.AddEdge(new Edge(a0, d1));
+
+            tetrahedron.AddEdge(new Edge(c0, b0));
+            tetrahedron.AddEdge(new Edge(c0, d1));
+
+            tetrahedron.AddEdge(new Edge(b0, d1));
+
+
+            return tetrahedron;
         }
-        public static WireModel NewSphere(Vector centr,double r)
-        {
-            WireModel sphere 
-        }*/
-    }
+            /*public static WireModel NewCilindr(Vector centr,double r,double h)
+            {
+
+            }
+            public static WireModel NewSphere(Vector centr,double r)
+            {
+                WireModel sphere 
+            }*/
+        }
 }
