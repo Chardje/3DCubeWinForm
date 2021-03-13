@@ -303,6 +303,11 @@ namespace _3DCubeWinForm
 
             return tetrahedron;
         }
+        /// <summary>
+        /// Создание октайдера
+        /// </summary>
+        /// <param name="points">масив из шести точек октайдера</param>
+        /// <returns></returns>
         public static WireModel NewOctahedron(params Vector[] points)
         {
             if (points.Length != 6)

@@ -25,7 +25,8 @@ namespace _3DCubeWinForm
             new Vector(0, -raz + 200, dalinost));
 
         private Matrix current = Matrix.I;
-        private Matrix increment = Matrix.Move(new Vector(0, 200, +dalinost))  * Matrix.RotateY(0.05) * Matrix.Move(new Vector(0, -200, -dalinost));
+        private Matrix increment = Matrix.I;
+        private Point? StartLocation = null;
 
         public Form1()
         {
@@ -35,6 +36,7 @@ namespace _3DCubeWinForm
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
+            Matrix m = current * increment;
             Graphics g = e.Graphics;
             g.FillRectangle(
                 brush: Brushes.Black,
@@ -44,8 +46,8 @@ namespace _3DCubeWinForm
             for (int i = 0; i < octahedron.Count; i++)
             {
                 Edge edge = octahedron[i];
-                Vector p0 = (current * edge[0]).Project(ze);
-                Vector p1 = (current * edge[1]).Project(ze);
+                Vector p0 = (m * edge[0]).Project(ze);
+                Vector p1 = (m * edge[1]).Project(ze);
                 g.DrawLine(Pens.Red, offsetX + (float) (scale * p0.X), offsetY + (float) (scale * p0.Y), offsetX + (float) (scale * p1.X), offsetY + (float) (scale * p1.Y));
             }
         }
@@ -54,6 +56,32 @@ namespace _3DCubeWinForm
         {
             current = current * increment;
             Invalidate();
+        }
+
+        private void Form1_MouseDown(object sender, MouseEventArgs e)
+        {
+            StartLocation = e.Location;
+        }
+
+        private void Form1_MouseUp(object sender, MouseEventArgs e)
+        {
+            StartLocation = null;
+            current = current * increment;
+            increment = Matrix.I;
+            Invalidate();
+        }
+
+        private void Form1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (StartLocation != null)
+            {
+                Point startLocation = (Point)StartLocation;
+                Point endLocation = e.Location;
+                int dx = endLocation.X - startLocation.X;
+                int dy = endLocation.Y - startLocation.Y;
+                increment = Matrix.Move(new Vector(0, 0, +dalinost)) * Matrix.RotateX((+dy) / 100d) * Matrix.RotateY((-dx) / 100d) * Matrix.Move(new Vector(0, 0, -dalinost));
+                Invalidate();
+            }
         }
     }
 }
