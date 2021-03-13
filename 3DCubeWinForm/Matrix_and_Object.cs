@@ -288,33 +288,47 @@ namespace _3DCubeWinForm
         /// <param name="c">третья</param>
         /// <param name="d">верхняя точка</param>
         /// <returns></returns>
-        public static WireModel NewTetrahedron(Vector a, Vector b,Vector c, Vector d)
+        public static WireModel NewTetrahedron(Vector a, Vector b, Vector c, Vector d)
         {
             WireModel tetrahedron = new WireModel();
-            Vector a0 = a;
-            Vector b0 = b;
-            Vector c0 = c;
-            Vector d1 = d;
 
-            tetrahedron.AddEdge(new Edge(a0, b0));
-            tetrahedron.AddEdge(new Edge(a0, c0));
-            tetrahedron.AddEdge(new Edge(a0, d1));
+            tetrahedron.AddEdge(new Edge(a, b));
+            tetrahedron.AddEdge(new Edge(a, c));
+            tetrahedron.AddEdge(new Edge(a, d));
 
-            tetrahedron.AddEdge(new Edge(c0, b0));
-            tetrahedron.AddEdge(new Edge(c0, d1));
+            tetrahedron.AddEdge(new Edge(c, b));
+            tetrahedron.AddEdge(new Edge(c, d));
 
-            tetrahedron.AddEdge(new Edge(b0, d1));
-
+            tetrahedron.AddEdge(new Edge(b, d));
 
             return tetrahedron;
         }
-            /*public static WireModel NewCilindr(Vector centr,double r,double h)
+        public static WireModel NewOctahedron(params Vector[] points)
+        {
+            if (points.Length != 6)
             {
-
+                throw new ArgumentException($"points.Length = {points.Length}, expected exactly 6");
             }
-            public static WireModel NewSphere(Vector centr,double r)
+            WireModel octahedron = new WireModel();
+            for (int i = 1; i <= 4; i += 1)
             {
-                WireModel sphere 
-            }*/
+                octahedron.AddEdge(new Edge(points[i], points[0]));
+                octahedron.AddEdge(new Edge(points[i], points[5]));
+            }
+            for (int i = 1; i < 4; i += 1)
+            {
+                octahedron.AddEdge(new Edge(points[i], points[i + 1]));
+            }
+            octahedron.AddEdge(new Edge(points[4], points[1]));
+            return octahedron;
         }
+        /*public static WireModel NewCilindr(Vector centr,double r,double h)
+        {
+
+        }
+        public static WireModel NewSphere(Vector centr,double r)
+        {
+            WireModel sphere 
+        }*/
+    }
 }
