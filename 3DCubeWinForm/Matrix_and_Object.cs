@@ -280,6 +280,45 @@ namespace _3DCubeWinForm
 
             return cube;
         }
+
+        /// <summary>
+        /// Проволочная модель куба
+        /// </summary>
+        /// <param name="center">центр</param>
+        /// <param name="length">длина ребра</param>
+        /// <returns></returns>
+        public static WireModel NewCube(Vector center,double length)
+        {
+            WireModel cube = new WireModel();
+
+            Vector a0 = new Vector(center.X - length / 2, center.Y - length / 2, center.Z - length / 2);
+            Vector a1 = new Vector(center.X + length / 2, center.Y - length / 2, center.Z - length / 2);
+            Vector a2 = new Vector(center.X + length / 2, center.Y + length / 2, center.Z - length / 2);
+            Vector a3 = new Vector(center.X - length / 2, center.Y + length / 2, center.Z - length / 2);
+
+            Vector b0 = new Vector(center.X - length / 2, center.Y - length / 2, center.Z + length / 2);
+            Vector b1 = new Vector(center.X + length / 2, center.Y - length / 2, center.Z + length / 2);
+            Vector b2 = new Vector(center.X + length / 2, center.Y + length / 2, center.Z + length / 2);
+            Vector b3 = new Vector(center.X - length / 2, center.Y + length / 2, center.Z + length / 2);
+
+            cube.AddEdge(new Edge(a0, b0));
+            cube.AddEdge(new Edge(a1, b1));
+            cube.AddEdge(new Edge(a2, b2));
+            cube.AddEdge(new Edge(a3, b3));
+
+            cube.AddEdge(new Edge(a0, a1));
+            cube.AddEdge(new Edge(a1, a2));
+            cube.AddEdge(new Edge(a2, a3));
+            cube.AddEdge(new Edge(a3, a0));
+
+            cube.AddEdge(new Edge(b0, b1));
+            cube.AddEdge(new Edge(b1, b2));
+            cube.AddEdge(new Edge(b2, b3));
+            cube.AddEdge(new Edge(b3, b0));
+
+            return cube;
+        }
+
         /// <summary>
         /// Проволочная модель тетрайдера
         /// </summary>
@@ -303,6 +342,34 @@ namespace _3DCubeWinForm
 
             return tetrahedron;
         }
+
+        /// <summary>
+        /// Проволочная модель тетрайдера
+        /// </summary>
+        /// <param name="center">центр</param>
+        /// <param name="length">длина ребра</param>
+        /// <returns></returns>
+        public static WireModel NewTetrahedron(Vector center, double length)
+        {
+            WireModel tetrahedron = new WireModel();
+            
+            Vector a = new Vector(center.X - length / 2, center.Y + length * Math.Sqrt(6) / 12 , center.Z - length * Math.Sqrt(3) / 6);
+            Vector b = new Vector(center.X + length / 2, center.Y + length * Math.Sqrt(6) / 12, center.Z - length * Math.Sqrt(3) / 6);
+            Vector c = new Vector(center.X, center.Y + length * Math.Sqrt(6) / 12, center.Z + length * Math.Sqrt(3) / 3);
+            Vector d = new Vector(center.X, center.Y - length * Math.Sqrt(6) / 4, center.Z);
+
+            tetrahedron.AddEdge(new Edge(a, b));
+            tetrahedron.AddEdge(new Edge(a, c));
+            tetrahedron.AddEdge(new Edge(a, d));
+
+            tetrahedron.AddEdge(new Edge(c, b));
+            tetrahedron.AddEdge(new Edge(c, d));
+
+            tetrahedron.AddEdge(new Edge(b, d));
+
+            return tetrahedron;
+        }
+
         /// <summary>
         /// Создание октайдера
         /// </summary>
@@ -315,6 +382,36 @@ namespace _3DCubeWinForm
                 throw new ArgumentException($"points.Length = {points.Length}, expected exactly 6");
             }
             WireModel octahedron = new WireModel();
+            for (int i = 1; i <= 4; i += 1)
+            {
+                octahedron.AddEdge(new Edge(points[i], points[0]));
+                octahedron.AddEdge(new Edge(points[i], points[5]));
+            }
+            for (int i = 1; i < 4; i += 1)
+            {
+                octahedron.AddEdge(new Edge(points[i], points[i + 1]));
+            }
+            octahedron.AddEdge(new Edge(points[4], points[1]));
+            return octahedron;
+        }
+
+        /// <summary>
+        /// Проволочная модель октайдера
+        /// </summary>
+        /// <param name="center">центр</param>
+        /// <param name="length">длина ребра</param>
+        /// <returns></returns>
+        public static WireModel NewOctahedron(Vector center, double length)
+        {            
+            WireModel octahedron = new WireModel();
+            
+            Vector[] points = {
+            new Vector(center.X,center.Y +length ,center.Z),
+            new Vector(center.X, center.Y ,center.Z - length),
+            new Vector(center.X+length,center.Y , center.Z),
+            new Vector(center.X,center.Y , center.Z + length),
+            new Vector(center.X-length,center.Y, center.Z),
+            new Vector(center.X,center.Y -length , center.Z) };
             for (int i = 1; i <= 4; i += 1)
             {
                 octahedron.AddEdge(new Edge(points[i], points[0]));
