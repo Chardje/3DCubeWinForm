@@ -138,6 +138,7 @@ namespace _3DCubeWinForm
             return new Matrix(array);
         }
     }
+
     ///<summary>
     ///ето точка в 3д
     ///</summary>
@@ -172,34 +173,116 @@ namespace _3DCubeWinForm
                 return cords[index];
             }
         }
+
         ///проецирование на екран
         public Vector Project(double ze)
         {
             return new Vector(X * ze / Z, Y * ze / Z, ze);
         }
+
+        /// <summary>
+        /// векторное произведение
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static Vector operator *(Vector a,Vector b)
+        {
+            double x = a.Y * b.Z - a.Z * b.Y;
+            double y = a.Z * b.X - a.X * b.Z;
+            double z = a.X * b.Y - a.Y * b.X;
+            return new Vector(x, y, z);
+        }
+
+        /// <summary>
+        /// Деление вектора на число
+        /// </summary>
+        /// <param name="a">Вектор</param>
+        /// <param name="b">Число</param>
+        /// <returns></returns>
+        public static Vector operator /(Vector a, double b)
+        {
+            return  new Vector(a.X/b,a.Y/b,a.Z/b);
+        }
+
+        /// <summary>
+        /// Длина вектора
+        /// </summary>
+        /// <returns></returns>
+        public double LenVec()
+        {
+            return Math.Sqrt(X * X + Y * Y + Z * Z);
+        }
+
+        /// <summary>
+        /// Нормирование
+        /// </summary>
+        /// <returns></returns>
+        public Vector Norm ()
+        {
+            return this/LenVec(); 
+        }
+
+        /// <summary>
+        /// скалярное произведение
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static double operator ^ (Vector a,Vector b)
+        {
+            return a.X * b.X + a.Y * b.Y + a.Z * b.Z;
+        }
     }
+
     /// <summary>
     /// создание рьобер
     /// </summary>
     public class Edge
     {
         ///создание рьобер
-        private readonly Vector[] ends = new Vector[2];
+        private readonly Vector[] points = new Vector[2];
         ///запись рьобер
         public Edge(Vector a, Vector b)
         {
-            ends[0] = a;
-            ends[1] = b;
+            points[0] = a;
+            points[1] = b;
         }
         ///возвращение вершины от рьобер
         public Vector this[int index]
         {
             get
             {
-                return ends[index];
+                return points[index];
             }
         }
+        public int Count => 2;
     }
+
+    /// <summary>
+    /// создание полигона
+    /// </summary>
+    public class Poligon
+    {
+        private readonly Vector[] points;
+        public Poligon(Vector [] points)
+        {
+            if (points.Length < 3)
+            {
+                throw new ArgumentException($"points.Length = {points.Length}, expected more or equal 3");
+            }
+            this.points = points;
+        }
+        public Vector this[int index]
+        {
+            get
+            {
+                return points[index];
+            }
+        }
+        public int Count => points.Length;
+    }
+
     /// <summary>
     /// создание проволочной модели
     /// </summary>
@@ -238,11 +321,14 @@ namespace _3DCubeWinForm
             }
         }
     }
+
     /// <summary>
     /// создание проволочних моделей
     /// </summary>
     public static class FigureFactory
     {
+        #region Cube
+
         /// <summary>
         /// проволочная модель куба
         /// </summary>
@@ -295,7 +381,11 @@ namespace _3DCubeWinForm
             Vector b = new Vector(center.X + length / 2, center.Y + length / 2, center.Z + length / 2);
 
             return NewCube(a,b);
-        }        
+        }
+
+        #endregion
+
+        #region Tetrahedron
 
         /// <summary>
         /// Проволочная модель тетрайдера
@@ -338,6 +428,10 @@ namespace _3DCubeWinForm
 
             return NewTetrahedron(a,b,c,d);
         }
+
+        #endregion
+
+        #region Octahedron
 
         /// <summary>
         /// Создание октайдера
@@ -382,13 +476,8 @@ namespace _3DCubeWinForm
             new Vector(center.X - length, center.Y, center.Z),
             new Vector(center.X, center.Y - length, center.Z));
         }
-        /*public static WireModel NewCilindr(Vector centr,double r,double h)
-        {
 
-        }
-        public static WireModel NewSphere(Vector centr,double r)
-        {
-            WireModel sphere 
-        }*/
+        #endregion
+       
     }
 }
