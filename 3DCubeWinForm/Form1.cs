@@ -16,21 +16,21 @@ namespace _3DCubeWinForm
         private const double dalinost = 4000;
         private const double raz = 1000;
         private const double scale = 10;
-        private readonly WireModel cubeCenter = FigureFactory.NewCube(new Vector(0,0,dalinost),raz);
-        private readonly WireModel octahedron = FigureFactory.NewOctahedron(
+        private readonly WireModel cubeCenter = FigureFactoryOld.NewCube(new Vector(0,0,dalinost),raz);
+        private readonly WireModel octahedron = FigureFactoryOld.NewOctahedron(
             new Vector(0, +raz+200, dalinost),
             new Vector(0, +200, dalinost - raz),
             new Vector(raz, +200, dalinost),
             new Vector(0, +200, dalinost + raz),
             new Vector(-raz, +200, dalinost),
             new Vector(0, -raz + 200, dalinost));
-        private readonly WireModel tetrahedron = FigureFactory.NewTetrahedron(
+        private readonly WireModel tetrahedron = FigureFactoryOld.NewTetrahedron(
             new Vector(-raz / 2, +raz * Math.Sqrt(6) / 12, dalinost - raz * Math.Sqrt(3) / 6),
             new Vector(raz / 2, +raz * Math.Sqrt(6) / 12, dalinost - raz * Math.Sqrt(3) / 6),
             new Vector(0, +raz * Math.Sqrt(6) / 12, dalinost + raz * Math.Sqrt(3) / 3),
             new Vector(0, -raz * Math.Sqrt(6) / 4, dalinost));
-        private readonly WireModel tetrahedronCenter = FigureFactory.NewTetrahedron(new Vector(0,0,dalinost),raz);
-        private readonly WireModel octahedronCenter = FigureFactory.NewOctahedron(new Vector(0, 0, dalinost), raz);
+        private readonly WireModel tetrahedronCenter = FigureFactoryOld.NewTetrahedron(new Vector(0,0,dalinost),raz);
+        private readonly WireModel octahedronCenter = FigureFactoryOld.NewOctahedron(new Vector(0, 0, dalinost), raz);
 
         private readonly WireModel model;
 
@@ -93,6 +93,11 @@ namespace _3DCubeWinForm
                 increment = Matrix.Move(new Vector(0, 0, +dalinost)) * Matrix.RotateX((+dy) / 100d) * Matrix.RotateY((-dx) / 100d) * Matrix.Move(new Vector(0, 0, -dalinost));
                 Invalidate();
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
